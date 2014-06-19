@@ -1,0 +1,7 @@
+*.pdb
+DistributedSharedInterfaces/bin/
+DistributedSharedInterfaces/obj/
+DistributedServerInterfaces/obj/
+DistributedClientInterfaces/bin/
+DistributedServerInterfaces/bin/
+DistributedClientInterfaces/obj/

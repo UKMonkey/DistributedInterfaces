@@ -1,6 +1,6 @@
 ﻿using System;
 using DistributedSharedInterfaces.Messages;
-using DistributedShared.Network;
+using DistributedSharedInterfaces.Network;
 
 namespace DistributedServerInterfaces.Networking
 {
