@@ -9,6 +9,7 @@ namespace DistributedSharedInterfaces.Jobs
     {
         byte[] Data { get; set; }
         long GroupId { get; set; }
+        long SupportingDataVersion { get; set; }
 
         int JobCount { get; }
         IEnumerable<IJobData> GetJobs();
