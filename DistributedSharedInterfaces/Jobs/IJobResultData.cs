@@ -1,10 +1,10 @@
-﻿namespace DistributedSharedInterfaces.Jobs
+﻿using DistributedSharedInterfaces.Serialisation;
+namespace DistributedSharedInterfaces.Jobs
 {
-    public interface IJobResultData
+    public interface IJobResultData : ISerialisable
     {
         string DllName { get; }
         long JobId { get; }
-        byte[] Data { get; }
 
         long CyclesSpentWorking { get; }
         bool CyclesSpentWorkingIsReliable { get; }

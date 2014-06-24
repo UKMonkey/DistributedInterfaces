@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DistributedSharedInterfaces.Serialisation;
 
 namespace DistributedSharedInterfaces.Jobs
 {
-    public interface IJobGroup
+    public interface IJobGroup : ISerialisable
     {
-        byte[] Data { get; set; }
         long GroupId { get; set; }
         long SupportingDataVersion { get; set; }
 
