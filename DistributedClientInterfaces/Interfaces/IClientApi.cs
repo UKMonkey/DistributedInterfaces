@@ -7,6 +7,5 @@ namespace DistributedClientInterfaces.Interfaces
     /************************************************************************/
     public interface IClientApi
     {
-        SQLiteConnection GetSQInterface();
     }
 }
