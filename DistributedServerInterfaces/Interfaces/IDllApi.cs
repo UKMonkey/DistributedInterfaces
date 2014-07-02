@@ -1,23 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using DistributedSharedInterfaces.Jobs;
 
 namespace DistributedServerInterfaces.Interfaces
 {
-    public delegate void DllApiCallback(IDllApi item);
+    public delegate void DataChangedCallback(String key, byte[] newValue);
 
     /************************************************************************/
-    /* The supporting data for jobs must be ready before the jobs are      **/
-    /* Returned                                                            **/
+    /* Threading model:                                                     */
+    /*   One thread will be responsible for getting the next job collection */
+    /*   One thread will be responsible for offering the results            */
+    /*   Any number of threads may call SupportingData / StatusData         */
+    /*   Any number of threads may call GetCleanJobGroup                    */
+    /*   It is essential that the supporting data and status                */
+    /*   are updated only during the "GetNextJobGroup" or "DataProvided"    */
+    /*   Clearly if they are changed it must be in a thread safe way        */
     /************************************************************************/
     public interface IDllApi : IDisposable
     {
-        event DllApiCallback SupportingDataChanged;
+        event DataChangedCallback SupportingDataChanged;
+        event DataChangedCallback StatusDataChanged;
 
         /// <summary>
         /// supporting data is 'global' data sent to all clients
         /// if updated during a "GetNextJobGroup" call, then all jobs in that group will have that supporting
-        /// data or later - note that this means it's important that it is always backwards compatable.
+        /// data or later - note that this means it's important that it is always backwards compatible.
         /// </summary>
         byte[] SupportingData { get; }
 
@@ -27,7 +33,7 @@ namespace DistributedServerInterfaces.Interfaces
         /// and that all jobs will be performed that are provided.  Ie - for the same status, the next job group
         /// provided should be the same.
         /// 
-        /// Set is guarenteed to be called rarely and in a thread safe way.  In all likelyhood, only
+        /// Set is guaranteed to be called rarely and in a thread safe way.  In all likelyhood, only
         /// once just after the dll is loaded.
         /// </summary>
         byte[] StatusData { get; set; }
@@ -43,7 +49,7 @@ namespace DistributedServerInterfaces.Interfaces
         /// actually that size, but provides a target that the dll should aim for.
         /// only one thread will call this at a time, allowing the system to modify anything that
         /// would change the status byte array.  The status byte array and the provided jobs will be 
-        /// saved atomicaly.
+        /// saved atomically.
         /// </summary>
         /// <param name="jobCount"></param>
         /// <returns></returns>

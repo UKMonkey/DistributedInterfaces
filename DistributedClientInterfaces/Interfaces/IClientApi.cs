@@ -1,5 +1,4 @@
-﻿using System.Data.SQLite;
-
+﻿
 namespace DistributedClientInterfaces.Interfaces
 {
     /************************************************************************/

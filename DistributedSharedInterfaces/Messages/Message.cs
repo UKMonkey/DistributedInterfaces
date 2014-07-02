@@ -2,7 +2,6 @@
 {
     public abstract class Message
     {
-        public long MessageId { get; private set; }
         public bool ValidToSerialise { get; set; }
         private long MessageSize { get; set; }
 

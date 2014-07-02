@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DistributedClientInterfaces.Interfaces
+﻿namespace DistributedClientInterfaces.Interfaces
 {
     /************************************************************************/
     /* This is the interface that is available to programs that wish to run */

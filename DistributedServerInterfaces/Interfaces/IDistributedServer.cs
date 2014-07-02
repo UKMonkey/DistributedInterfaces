@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DistributedServerInterfaces.Interfaces
+﻿namespace DistributedServerInterfaces.Interfaces
 {
     public interface IDistributedServer
     {
@@ -19,6 +14,7 @@ namespace DistributedServerInterfaces.Interfaces
         // or told to stop
         void StartListening(string newServerDlls, string workingServerDlls,
                             string newClientDlls, string workingClientDlls,
+                            string jobStore,
                             int port);
 
         void StopListening();
