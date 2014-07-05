@@ -1,5 +1,6 @@
 ﻿using System;
 using DistributedSharedInterfaces.Jobs;
+using System.Collections.Generic;
 
 namespace DistributedClientInterfaces.Interfaces
 {
@@ -13,7 +14,7 @@ namespace DistributedClientInterfaces.Interfaces
     /************************************************************************/
     public interface IDllApi : IDisposable
     {
-        byte[] SupportingData { set; }
+        Dictionary<String, byte[]> SupportingData { set; }
 
         void OnDllLoaded(IClientApi client);
         byte[] ProcessJob(IJobData job);

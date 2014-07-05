@@ -1,5 +1,6 @@
 ﻿using System;
 using DistributedSharedInterfaces.Jobs;
+using System.Collections.Generic;
 
 namespace DistributedServerInterfaces.Interfaces
 {
@@ -17,32 +18,43 @@ namespace DistributedServerInterfaces.Interfaces
     /************************************************************************/
     public interface IDllApi : IDisposable
     {
+        /// <summary>
+        /// Supporting data is sent to every client.  All clients will have
+        /// at least the version that is available when the job was created.  They may have a later
+        /// one also; so it's important that the supporting data is backwards compatible.
+        /// There is a single key that is reserved for the supporting data; using it will result in 
+        /// data loss.  This key is
+        /// "__RESERVED__:Version"
+        /// This key contains the version of the supporting data currently available; which
+        /// is provided to all jobs created
+        /// </summary>
         event DataChangedCallback SupportingDataChanged;
+
+        /// <summary>
+        /// The status data is server data only that allows it to keep track of 
+        /// what jobs need to be done.  Note that since the system guarentees that 
+        /// a job will be done, it doesn't need to keep track of what jobs are left to do
+        /// unless there is a reason that data is of use.
+        /// 
+        /// An example; for a prime number calculator, the supporting data would be the 
+        /// known prime numbers.  The status would be largest number that has been queued, the numbers
+        /// that have not yet been processed, and the largest number that can be queued (ie largest number 
+        /// processed so far sqrded)  There is no need for the clients to know what numbers have / have not yet
+        /// been processed, but the list of known primes would be essential for all clients and jobs.
+        /// 
+        /// Same as the supporting data, there is a reserved key;  "__RESERVED__:Version" which is the version of the status
+        /// </summary>
         event DataChangedCallback StatusDataChanged;
 
         /// <summary>
-        /// supporting data is 'global' data sent to all clients
-        /// if updated during a "GetNextJobGroup" call, then all jobs in that group will have that supporting
-        /// data or later - note that this means it's important that it is always backwards compatible.
-        /// </summary>
-        byte[] SupportingData { get; }
-
-        /// <summary>
-        /// The status is saved after each call to 'GetNextJobGroup'
-        /// it is saved at the same time as the new collection of jobs to ensure that every job is created once
-        /// and that all jobs will be performed that are provided.  Ie - for the same status, the next job group
-        /// provided should be the same.
-        /// 
-        /// Set is guaranteed to be called rarely and in a thread safe way.  In all likelyhood, only
-        /// once just after the dll is loaded.
-        /// </summary>
-        byte[] StatusData { get; set; }
-
-        /// <summary>
         /// Allows the dll to prepare itself before any jobs are requested. Called only once when the dll is loaded
+        /// The last known supporting data and status are provided.  It is in this function that the dll
+        /// can tear apart these values and return itself to the last known good state
+        /// Importantly, the events that the supporting data / status have changed will not be listened to
+        /// until after this function has returned (but before any other function is called)
         /// </summary>
         /// <param name="server"></param>
-        void OnDllLoaded(IServerApi server);
+        void OnDllLoaded(IServerApi server, Dictionary<String, byte[]> supportingData, Dictionary<String, byte[]> status);
 
         /// <summary>
         /// requests a job group of a certain size.  There is no requirement that the job group is

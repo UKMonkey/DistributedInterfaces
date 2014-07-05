@@ -3,8 +3,7 @@ namespace DistributedSharedInterfaces.Jobs
 {
     public interface IJobResultData : ISerialisable
     {
-        string DllName { get; }
-        long JobId { get; }
+        IJobData Job { get; }
 
         long CyclesSpentWorking { get; }
         bool CyclesSpentWorkingIsReliable { get; }

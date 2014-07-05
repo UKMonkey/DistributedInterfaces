@@ -43,6 +43,7 @@
     <Compile Include="Jobs\IJobData.cs" />
     <Compile Include="Jobs\IJobGroup.cs" />
     <Compile Include="Jobs\IJobResultData.cs" />
+    <Compile Include="Jobs\ReservedKeys.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\IMessageInputStream.cs" />
     <Compile Include="Messages\IMessageOutputStream.cs" />
